@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {Link} from "react-router-dom";
-import logo from '../logo.svg';
+import logo from '../../logo.svg';
 import {connect} from "react-redux";
-import {testIncrementActionAsync, testIncrementActionSync} from "../reducer/test/testActions";
+import {testIncrementActionAsync, testIncrementActionSync} from "../../reducer/test/testActions";
 
 class OldMain extends Component {
 
@@ -23,7 +23,7 @@ class OldMain extends Component {
 }
 
 //Proposing an alternative pattern to one class and one container per component
-//Since we are never going to use this component without the container. 
+//Since we are never going to use this component without the container.
 const mapStateToProps = state => {
     return {
         counter: state.test.counter

@@ -1,6 +1,6 @@
 
 
-import {testIncrementActionAsync, testIncrementActionSync} from "../reducer/test/testActions";
+import {testIncrementActionAsync, testIncrementActionSync} from "../../reducer/test/testActions";
 import {connect} from "react-redux";
 import Test from "./Test";
 
