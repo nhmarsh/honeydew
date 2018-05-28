@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 class AuthenticatedLanding extends React.Component {
 
     render() {
-        return <div>You have logged in as {this.props.user.salutationName}</div>
+        return <div>You have logged in as {this.props.user.userInfo.salutation}</div>
     }
 }
 

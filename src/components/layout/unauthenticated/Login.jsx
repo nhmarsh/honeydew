@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {connect} from "react-redux";
 import autoBind from "react-autobind";
 import {Button, ControlLabel, FormControl, FormGroup, HelpBlock} from "react-bootstrap";
+import {Redirect} from "react-router";
+import {authenticate} from "../../../reducer/auth/AuthActions";
 
 
 class Login extends React.Component {
@@ -41,7 +43,7 @@ class Login extends React.Component {
 
         if(!usernameValidity && !passwordValidity) {
             this.props.checkLogin(this.userName.value, this.password.value)
-                .then((redirect) => {this.setState({redirect: redirect})})
+                .then(() => {this.setState({redirect: <Redirect to="/authenticated/landing" />})})
                 .catch((err) => {
                     console.log(err);
                     this.setState({
@@ -90,4 +92,15 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+//TODO probably don't need this
+const mapStateToProps = (state) => {
+    return state;
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        checkLogin: (un, pw) => dispatch(authenticate(un, pw))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

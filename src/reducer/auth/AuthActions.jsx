@@ -1,9 +1,14 @@
+import {getUserInfo} from "../authenticatedUser/AuthUserActions";
+import {getUserTasks} from "../task/TaskActions";
+
 export function authenticate(username, password) {
     return dispatch => {
         //TODO replace this with an actual fetch call
         if(username === 'testUser' && password === 'testPass') {
             return Promise.resolve().then(() => {
                 dispatch(userAuthenticated(username));
+                dispatch(getUserInfo(username));
+                dispatch(getUserTasks(username))
             })
         } else {
             return Promise.reject();

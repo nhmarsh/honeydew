@@ -2,11 +2,15 @@
 //import reducer from './reducer';
 import {combineReducers} from 'redux';
 import testReducer from "./test/testReducer";
-import authReducer from "./auth/authReducer";
+import authReducer from "./auth/AuthReducer";
+import authUserReducer from './authenticatedUser/AuthUserReducer'
+import taskReducer from "./task/TaskReducer";
 
 //When we perform a mapStateToProps now,
 //testReducer's state ({counter: 0}) will be available as state.test
 export default combineReducers({
     test: testReducer,
-    auth: authReducer
+    auth: authReducer,
+    user: authUserReducer,
+    tasks: taskReducer
 });
