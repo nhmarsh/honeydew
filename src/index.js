@@ -9,7 +9,6 @@ import reducer from './reducer';
 
 //Entry point for our react application
 
-
 //Create our top-level store with thunk
 const store = createStore(reducer, compose(
     applyMiddleware(thunk),
