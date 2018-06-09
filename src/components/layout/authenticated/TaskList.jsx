@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {getUserTasks} from "../../../reducer/task/TaskActions";
+import {addTask, getUserTasks} from "../../../reducer/task/TaskActions";
 import Task from "../../task/Task";
 import autoBind from "react-autobind";
+import {STATE_TO_DO} from "../../../constants/TaskConstants";
 
 
 class TaskList extends React.Component {
@@ -26,10 +27,22 @@ class TaskList extends React.Component {
         return tasks;
     }
 
+    addTask() {
+        this.props.addTask({
+            id: 0,
+            name: '',
+            state: STATE_TO_DO,
+            subTasks: [],
+            dirty: true
+        });
+    }
 
     render() {
         console.log('building task list');
-        return <div>{this.buildTaskList()}</div>
+        return <div>
+            {this.buildTaskList()}
+            <button onClick={this.addTask}>Add a task!</button>
+        </div>
     }
 }
 
@@ -42,7 +55,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshTasks: (username) => dispatch(getUserTasks(username))
+        refreshTasks: (username) => dispatch(getUserTasks(username)),
+        addTask: (task) => dispatch(addTask(task))
     }
 };
 

@@ -32,8 +32,8 @@ class Task extends React.Component {
         console.log('rendering task ' + this.props.index);
         return <div>
             <div>id: <input type="text" value={this.props.task.id} onChange={this.onChangeId} /> </div>
-            <div>id: <input type="text" value={this.props.task.name} onChange={this.onChangeName} /> </div>
-            <div>id: <input type="text" value={this.props.task.state} onChange={this.onChangeState} /> </div>
+            <div>name: <input type="text" value={this.props.task.name} onChange={this.onChangeName} /> </div>
+            <div>state: <input type="text" value={this.props.task.state} onChange={this.onChangeState} /> </div>
             <div>subtasks: {this.props.task.subTasks ? this.props.task.subTasks.length : "No subtasks"}</div>
             <div>Dirty: {this.props.task.dirty ? "Dirty" : "Clean"}</div>
         </div>
