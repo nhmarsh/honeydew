@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import autoBind from "react-autobind";
 import {Button, ControlLabel, FormControl, FormGroup, HelpBlock} from "react-bootstrap";

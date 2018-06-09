@@ -76,13 +76,74 @@ export const TASKS_LOAD_SUCCESS = 'TASKS_LOAD_SUCCESS';
 export function taskLoadSuccess(taskInfo) {
     return {
         type: TASKS_LOAD_SUCCESS,
-        data: taskInfo
+        taskInfo: taskInfo
     }
 }
 
 export const TASKS_LOAD_FAILURE = 'TASKS_LOAD_FAILURE';
-export function taskLoadFailure() {
+export function taskLoadFailure(errorMsg) {
     return {
-        type: TASKS_LOAD_FAILURE
+        type: TASKS_LOAD_FAILURE,
+        errorMsg: errorMsg
+    }
+}
+
+export const ADD_TASK = 'ADD_TASK';
+export function addTask(task) {
+    return {
+        type: ADD_TASK,
+        task: task
+    };
+}
+
+export const REMOVE_TASK = 'REMOVE_TASK';
+export function removeTask(index) {
+    return {
+        type: REMOVE_TASK,
+        index: index
+    };
+}
+
+export const UPDATE_TASK = 'UPDATE_TASK';
+export function updateTask(index, updatedProps) {
+    return {
+        type: UPDATE_TASK,
+        index: index,
+        updatedProps: updatedProps
+    }
+}
+
+export const SYNC_TASK = 'SYNC_TASK';
+export function syncTask(index, taskData) {
+    return dispatch => {
+        dispatch(taskSyncing(index));
+        //TODO axios call here
+        if(index === 5) {
+            return Promise.reject('Test').finally(error => {
+                dispatch(taskDoneSyncing(index, false, error));
+            })
+        }
+
+        return Promise.resolve().finally(() => {
+            dispatch(taskDoneSyncing(index, true));
+        });
+    }
+}
+
+export const TASK_SYNCING = 'TASK_SYNCING';
+export function taskSyncing(index) {
+    return {
+        type: TASK_SYNCING,
+        index: index
+    }
+}
+
+export const TASK_DONE_SYNCING = 'TASK_DONE_SYNCING';
+export function taskDoneSyncing(index, success, errorMsg) {
+    return {
+        type: TASK_SYNCING,
+        index: index,
+        success: success,
+        errorMsg: errorMsg
     }
 }
