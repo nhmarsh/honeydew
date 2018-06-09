@@ -105,9 +105,9 @@ function insertItem(array, index, item) {
     return newArray;
 }
 
-function removeItem(array, action) {
+function removeItem(array, index) {
     let newArray = array.slice();
-    newArray.splice(action.index, 1);
+    newArray.splice(index, 1);
     return newArray;
 }
 
