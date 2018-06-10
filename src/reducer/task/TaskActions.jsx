@@ -96,6 +96,15 @@ export function addTask(task) {
     };
 }
 
+export function deleteTask(index) {
+    return dispatch => {
+        //If axios call to delete task fails, don't remove it.
+        Promise.resolve().then(() => {
+            dispatch(removeTask(index));
+        })
+    }
+}
+
 export const REMOVE_TASK = 'REMOVE_TASK';
 export function removeTask(index) {
     return {
@@ -124,9 +133,13 @@ export function syncTask(index, taskData) {
             })
         }
 
-        return Promise.resolve().finally(() => {
-            dispatch(taskDoneSyncing(index, true));
-        });
+        if(taskData.markedForDeletion) {
+            return dispatch(deleteTask(index));
+        } else {
+            return Promise.resolve().finally(() => {
+                dispatch(taskDoneSyncing(index, true));
+            });
+        }
     }
 }
 

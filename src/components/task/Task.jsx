@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
 import autoBind from "react-autobind";
-import {removeTask, updateTask} from "../../reducer/task/TaskActions";
+import {removeTask, syncTask, updateTask} from "../../reducer/task/TaskActions";
 
 
 class Task extends React.Component {
@@ -29,7 +29,11 @@ class Task extends React.Component {
     }
 
     removeTask() {
-        this.props.removeSelf(this.props.index);
+        this.updateTask({markedForDeletion: true});
+    }
+
+    acceptChanges() {
+        this.props.syncTask(this.props.index, this.props.task);
     }
 
     render() {
@@ -40,7 +44,9 @@ class Task extends React.Component {
             <div>state: <input type="text" value={this.props.task.state} onChange={this.onChangeState} /> </div>
             <div>subtasks: {this.props.task.subTasks ? this.props.task.subTasks.length : "No subtasks"}</div>
             <div>Dirty: {this.props.task.dirty ? "Dirty" : "Clean"}</div>
+            <div>Marked for deletion: {this.props.task.markedForDeletion ? "true" : "false"}</div>
             <div><button onClick={this.removeTask}>Remove me</button></div>
+            {this.props.task.dirty ? <div><button onClick={this.acceptChanges}>Accept Changes</button></div> : null}
         </div>
     }
 }
@@ -54,7 +60,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
     return {
         updateTask: (index, updatedProps) => {dispatch(updateTask(index, updatedProps))},
-        removeSelf: (index) => {dispatch(removeTask(index))}
+        syncTask: (index, taskData) => {dispatch(syncTask(index, taskData))}
     }
 };
 
