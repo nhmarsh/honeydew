@@ -154,7 +154,7 @@ export function taskSyncing(index) {
 export const TASK_DONE_SYNCING = 'TASK_DONE_SYNCING';
 export function taskDoneSyncing(index, success, errorMsg) {
     return {
-        type: TASK_SYNCING,
+        type: TASK_DONE_SYNCING,
         index: index,
         success: success,
         errorMsg: errorMsg

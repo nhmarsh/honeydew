@@ -89,7 +89,7 @@ export default function taskReducer(state = initialState, action) {
                 {},
                 state,
                 {
-                    taskInfo: updateItem(state.taskInfo, action.index, {syncing: !!action.success, dirty: !!action.success, errorMsg: action.errorMsg})
+                    taskInfo: updateItem(state.taskInfo, action.index, {syncing: !!action.success, dirty: !action.success, errorMsg: action.errorMsg})
                 }
 
             );
