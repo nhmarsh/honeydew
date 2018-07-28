@@ -6,7 +6,7 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import reducer from './reducer';
-
+import axios from 'axios';
 //Entry point for our react application
 
 //Create our top-level store with thunk
@@ -22,6 +22,7 @@ const appElement = (
         <App/>
     </Provider>
 );
+
 //Render our App (enclosed in a provider which contains the store we just created)
 //Onto containerElement on the page.
 //This "injects" our app onto the page.

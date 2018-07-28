@@ -4,7 +4,7 @@ import {addTask, getUserTasks} from "../../../reducer/task/TaskActions";
 import Task from "../../task/Task";
 import autoBind from "react-autobind";
 import {STATE_TO_DO} from "../../../constants/TaskConstants";
-
+import axios from 'axios';
 
 class TaskList extends React.Component {
 
@@ -37,11 +37,20 @@ class TaskList extends React.Component {
         });
     }
 
+    test() {
+        axios.get('http://localhost:8080/springjwt/test').then((response) => {
+            console.log(response.data);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
     render() {
         console.log('building task list');
         return <div>
             {this.buildTaskList()}
             <button onClick={this.addTask}>Add a task!</button>
+            <button onClick={this.test}> Test</button>
         </div>
     }
 }
