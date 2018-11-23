@@ -13,3 +13,7 @@ export const initAxios = (cookies) => {
 export const setAxiosAuth = (auth) => {
     axios.defaults.headers.common['authorization'] = 'Bearer ' + auth;
 };
+
+export const clearAxiosAuth = () => {
+    delete axios.defaults.headers.common['authorization'];
+};

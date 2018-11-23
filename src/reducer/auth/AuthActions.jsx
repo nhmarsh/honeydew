@@ -1,6 +1,6 @@
 import base64 from 'base-64';
 import axios from 'axios';
-import {authCookieName, setAxiosAuth} from "../../axios-config";
+import {authCookieName, clearAxiosAuth, setAxiosAuth} from "../../axios-config";
 
 export function authenticate(userName, password, cookies) {
     return dispatch => {
@@ -17,34 +17,51 @@ export function authenticate(userName, password, cookies) {
                     cookies.set(authCookieName, response.data.access_token)
                 }
                 setAxiosAuth(response.data.access_token);
-                dispatch(userAuthenticated(userName, password));
+                dispatch(userAuthenticated());
             }).catch((error, otherarg) => {
                 console.log('Error retrieving credentials!' + error);
-                delete axios.defaults.headers.common['authorization'];
-                cookies.expire(authCookieName);
+                clearAxiosAuth();
+                dispatch(userAuthFailed(cookies));
         })
     }
 }
 
 export function attemptReauthentication(cookies) {
+    return dispatch => {
+        if (cookies && cookies.get(authCookieName)) {
+            setAxiosAuth(cookies.get(authCookieName));
+        }
+        axios.get('http://localhost:8080/springjwt/test').then((response) => {
+            dispatch(userAuthenticated())
+        }).catch((error) => {
+            clearAxiosAuth();
+            dispatch(userAuthFailed(cookies));
+        });
+    }
     //Try to ping the server. If it works, our token is still valid
     //Otherwise we're invalid
 }
 
 //TODO replace principal with auth token
 export const  USER_AUTHENTICATED = 'USER_AUTHENTICATED';
-export function userAuthenticated(userPrincipal, password) {
+export function userAuthenticated() {
     return {
-        type: USER_AUTHENTICATED,
-        userPrincipal,
-        password
+        type: USER_AUTHENTICATED
     }
 }
 
 export const USER_LOG_OUT = 'USER_LOG_OUT';
-export function userLogOut() {
+export function userLogOut(cookies) {
+    cookies.remove(authCookieName);
     return {
         type: USER_LOG_OUT
     }
 }
 
+export const USER_AUTH_FAILED = 'USER_AUTH_FAILED';
+export function userAuthFailed(cookies) {
+    cookies.remove(authCookieName);
+    return {
+        type: USER_AUTH_FAILED
+    }
+}

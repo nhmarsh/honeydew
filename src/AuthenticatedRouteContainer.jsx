@@ -3,8 +3,7 @@ import {connect} from "react-redux";
 import {Redirect, Route} from "react-router";
 import Landing from "./components/layout/authenticated/Landing";
 import autoBind from "react-autobind";
-import axios from "axios/index";
-import {authenticate, USER_LOG_OUT, userLogOut} from "./reducer/auth/AuthActions";
+import {attemptReauthentication, authenticate, userLogOut} from "./reducer/auth/AuthActions";
 
 class AuthenticatedRouteContainer extends React.Component {
 
@@ -16,36 +15,18 @@ class AuthenticatedRouteContainer extends React.Component {
     }
 
     componentDidMount() {
-        var self = this;
         if(!this.props.auth.authenticated) {
             this.props.attemptReauthentication(this.props.cookies);
         }
-
-
-        // axios.interceptors.response.use((response) => {
-        //     // Do something with response data
-        //     return response;
-        // }, function (error) {
-        //     // Do something with response error
-        //     if(error.status === 401) {
-        //         self.props.authenticate(self.props.auth.userPrincipal, self.props.auth.password).then((response) => {
-        //             console.log('Token expired! Retrying...');
-        //             axios.request(error.config);
-        //         }).catch((error) => {
-        //             console.log('Token refresh failed! Logging out...')
-        //
-        //         })
-        //     }
-        // });
     }
 
 
     render() {
         return <div>
-            {!!this.props.auth.authenticated ?
+            {this.props.auth.authenticated ?
                 <Route exact path="/authenticated/landing" component={Landing} />
             :
-                this.props.auth.authenticationAttempted ? <Redirect to="/login" /> : <div>loading...</div>}
+                this.props.auth.authenticationFailed ? <Redirect to="/login" /> : <div>loading...</div>}
             </div>
 
     }
@@ -62,6 +43,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         authenticate: (username, password) => {
             return authenticate(username, password)
+        },
+        attemptReauthentication: (cookies) => {
+            return dispatch(attemptReauthentication(cookies))
         },
         logOut: () => {
             return dispatch(userLogOut())

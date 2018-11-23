@@ -41,7 +41,7 @@ class Login extends React.Component {
         }
 
         if(!usernameValidity && !passwordValidity) {
-            this.props.checkLogin(this.userName.value, this.password.value)
+            this.props.checkLogin(this.userName.value, this.password.value, this.props.cookies)
                 .then(() => {this.setState({redirect: <Redirect to="/authenticated/landing" />})})
                 .catch((err) => {
                     console.log(err);
@@ -100,7 +100,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        checkLogin: (un, pw) => dispatch(authenticate(un, pw))
+        checkLogin: (un, pw, cookies) => dispatch(authenticate(un, pw, cookies))
     }
 };
 

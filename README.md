@@ -11,5 +11,4 @@ To test: yarn test
 Todo board:
 -
 1. Pull tasks from server
-2. Set cookie on authentication so that a user doesn't have to reauth on refresh
-2a. Stop checking for userPrincipal - instead do a quick call to the server to get user information.
+2. Refresh tokens every 5 minutes or so. 
