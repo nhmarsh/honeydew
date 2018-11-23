@@ -17,30 +17,35 @@ class AuthenticatedRouteContainer extends React.Component {
 
     componentDidMount() {
         var self = this;
-        axios.interceptors.response.use(function (response) {
-            // Do something with response data
-            return response;
-        }, function (error) {
-            // Do something with response error
-            if(error.status === 401) {
-                self.props.authenticate(self.props.auth.userPrincipal, self.props.auth.password).then((response) => {
-                    console.log('Token expired! Retrying...');
-                    axios.request(error.config);
-                }).catch((error) => {
-                    console.log('Token refresh failed! Logging out...')
+        if(!this.props.auth.authenticated) {
+            this.props.attemptReauthentication(this.props.cookies);
+        }
 
-                })
-            }
-        });
+
+        // axios.interceptors.response.use((response) => {
+        //     // Do something with response data
+        //     return response;
+        // }, function (error) {
+        //     // Do something with response error
+        //     if(error.status === 401) {
+        //         self.props.authenticate(self.props.auth.userPrincipal, self.props.auth.password).then((response) => {
+        //             console.log('Token expired! Retrying...');
+        //             axios.request(error.config);
+        //         }).catch((error) => {
+        //             console.log('Token refresh failed! Logging out...')
+        //
+        //         })
+        //     }
+        // });
     }
 
 
     render() {
         return <div>
-            {!!this.props.auth.userPrincipal ?
+            {!!this.props.auth.authenticated ?
                 <Route exact path="/authenticated/landing" component={Landing} />
             :
-            <Redirect to="/login" />}
+                this.props.auth.authenticationAttempted ? <Redirect to="/login" /> : <div>loading...</div>}
             </div>
 
     }
@@ -49,7 +54,7 @@ class AuthenticatedRouteContainer extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         auth: state.auth,
-        currentURL: ownProps.location.pathname
+        cookies: ownProps.cookies
     }
 };
 

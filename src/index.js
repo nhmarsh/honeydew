@@ -7,6 +7,7 @@ import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import reducer from './reducer';
 import axios from 'axios';
+import {CookiesProvider} from "react-cookie";
 //Entry point for our react application
 
 //Create our top-level store with thunk
@@ -18,9 +19,11 @@ const store = createStore(reducer, compose(
 //Pull our root element and app element into consts for readability
 const containerElement = document.getElementById('root');
 const appElement = (
-    <Provider store={store}>
-        <App/>
-    </Provider>
+    <CookiesProvider>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+    </CookiesProvider>
 );
 
 //Render our App (enclosed in a provider which contains the store we just created)

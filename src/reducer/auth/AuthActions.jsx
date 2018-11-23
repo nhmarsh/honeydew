@@ -1,8 +1,8 @@
-import {getUserInfo} from "../authenticatedUser/AuthUserActions";
-import {getUserTasks} from "../task/TaskActions";
 import base64 from 'base-64';
 import axios from 'axios';
-export function authenticate(userName, password) {
+import {authCookieName, setAxiosAuth} from "../../axios-config";
+
+export function authenticate(userName, password, cookies) {
     return dispatch => {
         const clientId = 'testjwtclientid';
         const clientPass = 'jwtclientsecret';
@@ -13,13 +13,22 @@ export function authenticate(userName, password) {
         });
         return instance.post('/oauth/token?grant_type=password&username=' + userName + '&password=' + password)
             .then((response) => {
-                axios.defaults.headers.common['authorization'] = 'Bearer ' + response.data.access_token;
+                if(cookies) {
+                    cookies.set(authCookieName, response.data.access_token)
+                }
+                setAxiosAuth(response.data.access_token);
                 dispatch(userAuthenticated(userName, password));
             }).catch((error, otherarg) => {
                 console.log('Error retrieving credentials!' + error);
                 delete axios.defaults.headers.common['authorization'];
+                cookies.expire(authCookieName);
         })
     }
+}
+
+export function attemptReauthentication(cookies) {
+    //Try to ping the server. If it works, our token is still valid
+    //Otherwise we're invalid
 }
 
 //TODO replace principal with auth token

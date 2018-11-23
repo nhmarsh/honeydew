@@ -5,6 +5,7 @@ import Login from "./components/layout/unauthenticated/Login";
 import autoBind from "react-autobind";
 import {Switch} from "react-router";
 import AuthenticatedRouteContainer from "./AuthenticatedRouteContainer";
+import {withCookies} from "react-cookie";
 
 //We can simply instantiate Containers the same way we would instantiate components.
 class App extends Component {
@@ -20,10 +21,10 @@ class App extends Component {
             <Router>
                 <div className="App">
                     <Switch>
-                        <Route exact path="/" component={Login}/>
-                        <Route exact path="/login" component={Login}/>
-                        <Route path="/authenticated" component={AuthenticatedRouteContainer} />
-                        <Route path="*" component={Login} />
+                        <Route exact path="/" render={() => {return <Login cookies={this.props.cookies} />} }/>
+                        <Route exact path="/login" render={() => {return <Login cookies={this.props.cookies} />}}/>
+                        <Route path="/authenticated" render={() => {return <AuthenticatedRouteContainer cookies={this.props.cookies} />}} />
+                        <Route path="*" render={() => {return <Login cookies={this.props.cookies} />}} />
                     </Switch>
                 </div>
             </Router>
@@ -31,4 +32,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default withCookies(App);

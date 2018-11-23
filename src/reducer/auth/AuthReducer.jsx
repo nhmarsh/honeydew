@@ -1,15 +1,15 @@
 import {USER_AUTHENTICATED, USER_LOG_OUT} from "./AuthActions";
 
 const initialState = {
-    userPrincipal: '',
-    password: ''
+    authenticated: false,
+    authenticationAttempted: false
 };
 
 
 export default function authReducer(state = initialState, action) {
     switch(action.type) {
         case USER_AUTHENTICATED:
-            return Object.assign({}, state, {userPrincipal: action.userPrincipal, password: action.password});
+            return Object.assign({}, state, {authenticated: true, authenticationAttempted: true});
         case USER_LOG_OUT:
             return Object.assign({}, initialState);
         default:

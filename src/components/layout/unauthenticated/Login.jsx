@@ -18,7 +18,6 @@ class Login extends React.Component {
             passwordValid: null,
             loginFailed: false
         }
-
     }
 
     submitLogin(event) {
@@ -93,8 +92,10 @@ class Login extends React.Component {
 }
 
 //TODO probably don't need this
-const mapStateToProps = (state) => {
-    return state;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        cookies: ownProps.cookies
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
